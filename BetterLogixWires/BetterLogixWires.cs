@@ -11,7 +11,7 @@ namespace BetterLogixWires
 	{
 		public override string Name => "BetterLogixWires";
 		public override string Author => "eia485";
-		public override string Version => "1.0.0";
+		public override string Version => "1.0.1";
 		public override string Link => "https://github.com/EIA485/NeosBetterLogixWires/";
 		public override void OnEngineInit()
 		{
@@ -27,7 +27,7 @@ namespace BetterLogixWires
 			public static bool DeleteHighlightPatch(SyncRef<FresnelMaterial> ___Material, SyncRef<Slot> ___WireSlot, ConnectionWire __instance)
 			{
 				Type type = GetWireType(__instance.InputField.Target.GetType());
-				___Material.Target = GetWireMaterial(color.Red, type.GetDimensions(), typeof(Delegate).IsAssignableFrom(type), __instance);
+				___Material.Target = GetWireMaterial(color.Red, type.GetDimensions(), typeof(Impulse) == type, __instance);
 				AccessTools.Method(typeof(ConnectionWire), "SetColor").Invoke(__instance, new object[] { color.Red });
 				___WireSlot.Target.GetComponent<MeshRenderer>(null, false).Materials[0] = ___Material.Target;
 				return false;
@@ -49,7 +49,7 @@ namespace BetterLogixWires
 			public static bool SetTypeColorPrefix(SyncRef<FresnelMaterial> ___Material, Sync<color> ___TypeColor, SyncRef<Slot> ___WireSlot, ConnectionWire __instance)
 			{
 				Type type = GetWireType(__instance.InputField.Target.GetType());
-				___Material.Target = GetWireMaterial(___TypeColor, type.GetDimensions(), typeof(Delegate).IsAssignableFrom(type),__instance);
+				___Material.Target = GetWireMaterial(___TypeColor, type.GetDimensions(), typeof(Impulse)==type, __instance);
 				___WireSlot.Target.GetComponent<MeshRenderer>(null, false).Materials[0] = ___Material.Target;
 				return false;
 			}
