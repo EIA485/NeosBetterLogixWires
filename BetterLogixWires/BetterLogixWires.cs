@@ -11,7 +11,7 @@ namespace BetterLogixWires
 	{
 		public override string Name => "BetterLogixWires";
 		public override string Author => "eia485";
-		public override string Version => "1.0.1";
+		public override string Version => "1.0.2";
 		public override string Link => "https://github.com/EIA485/NeosBetterLogixWires/";
 		public override void OnEngineInit()
 		{
@@ -28,7 +28,6 @@ namespace BetterLogixWires
 			{
 				Type type = GetWireType(__instance.InputField.Target.GetType());
 				___Material.Target = GetWireMaterial(color.Red, type.GetDimensions(), typeof(Impulse) == type, __instance);
-				AccessTools.Method(typeof(ConnectionWire), "SetColor").Invoke(__instance, new object[] { color.Red });
 				___WireSlot.Target.GetComponent<MeshRenderer>(null, false).Materials[0] = ___Material.Target;
 				return false;
 			}
@@ -39,7 +38,6 @@ namespace BetterLogixWires
 			{
 				___TypeColor.Value = color;
 				___Material.Target = GetWireMaterial(color, dimensions, isImpulse, __instance);
-				AccessTools.Method(typeof(ConnectionWire), "SetColor").Invoke(__instance, new object[] { color });
 				___WireSlot.Target.GetComponent<MeshRenderer>(null, false).Materials.Add(___Material.Target);
 				return false;
 			}
@@ -49,7 +47,7 @@ namespace BetterLogixWires
 			public static bool SetTypeColorPrefix(SyncRef<FresnelMaterial> ___Material, Sync<color> ___TypeColor, SyncRef<Slot> ___WireSlot, ConnectionWire __instance)
 			{
 				Type type = GetWireType(__instance.InputField.Target.GetType());
-				___Material.Target = GetWireMaterial(___TypeColor, type.GetDimensions(), typeof(Impulse)==type, __instance);
+				___Material.Target = GetWireMaterial(___TypeColor.Value, type.GetDimensions(), typeof(Impulse)==type, __instance);
 				___WireSlot.Target.GetComponent<MeshRenderer>(null, false).Materials[0] = ___Material.Target;
 				return false;
 			}
@@ -121,6 +119,8 @@ namespace BetterLogixWires
 				float2 value = new float2(0.5f, 1f);
 				fresnelMaterial.NearTextureScale.Value = value;
 				fresnelMaterial.FarTextureScale.Value = value;
+				fresnelMaterial.NearColor.Value = color.MulA(.8f);
+				fresnelMaterial.FarColor.Value = color.MulRGB(.5f).MulA(.8f);
 			}
 			return fresnelMaterial;
 		}
